@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/66degrees/terraform-provider-analyticshub/pkg/analyticshub"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
+	"github.com/jblythe/terraform-provider-analyticshub/pkg/analyticshub"
 )
 
 // Generate the Terraform provider documentation using `tfplugindocs`:

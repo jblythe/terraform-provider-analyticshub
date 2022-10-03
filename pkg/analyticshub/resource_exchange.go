@@ -20,6 +20,34 @@ func resourceExchange() *schema.Resource {
 		},
 		Schema: map[string]*schema.Schema{
 			"name": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				ForceNew:    true,
+				Description: "This is a return only property. Any values placed here will not be used by the resource",
+				/*DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
+					return strings.EqualFold(old, new) // case-insensive comparing
+				},*/
+				ValidateFunc: validation.StringDoesNotContainAny(" "),
+			},
+			"projectId": {
+				Type:     schema.TypeString,
+				Required: true,
+				ForceNew: true,
+				/*DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
+					return strings.EqualFold(old, new) // case-insensive comparing
+				},*/
+				ValidateFunc: validation.StringDoesNotContainAny(" "),
+			},
+			"region": {
+				Type:     schema.TypeString,
+				Required: true,
+				ForceNew: true,
+				/*DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
+					return strings.EqualFold(old, new) // case-insensive comparing
+				},*/
+				ValidateFunc: validation.StringDoesNotContainAny(" "),
+			},
+			"dataExchangeId": {
 				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
@@ -65,9 +93,10 @@ func resourceExchange() *schema.Resource {
 				ValidateFunc: validation.StringDoesNotContainAny(" "),
 			},
 			"listingCount": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				ForceNew: true,
+				Type:        schema.TypeInt,
+				Optional:    true,
+				ForceNew:    true,
+				Description: "This is a write only property. Any values here will not be used by the process",
 				/*DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
 					return strings.EqualFold(old, new) // case-insensive comparing
 				},
@@ -96,10 +125,18 @@ func resourceExchangeCreate(ctx context.Context, data *schema.ResourceData, i in
 		return diag.FromErr(err)
 	}
 
-	_, err = client.Create(exchange.DisplayName, exchange).Do()
+	// Need Parent
+	parent, id := getIds(data)
 
-	data.SetId(exchange.Name)
+	createSvc := client.Create(parent, exchange)
+	createSvc.DataExchangeId(id)
+	_, err = createSvc.Do()
 
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	data.SetId(id)
 	return resourceExchangeRead(ctx, data, i)
 }
 
@@ -212,4 +249,12 @@ func expandExchange(data *schema.ResourceData) (*analyticshub.DataExchange, erro
 	}
 
 	return exchange, nil
+}
+
+func getIds(data *schema.ResourceData) (string, string) {
+	dataExchangeId := data.Get("dataExchangeId").(string)
+	project := data.Get("project").(string)
+	region := data.Get("region").(string)
+	parent := fmt.Sprintf("projects/%s/locations/%s", project, region)
+	return parent, dataExchangeId
 }
