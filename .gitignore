@@ -1,4 +1,11 @@
 .idea
-
 venv
-
+terraform-provider-analyticshub
+.terraform
+.env
+crash.log
+terraform.tfstate
+terraform.tfstate.backup
+bin
+vendor
+build

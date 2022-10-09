@@ -3,6 +3,7 @@ module github.com/jblythe/terraform-provider-analyticshub
 go 1.19
 
 require (
+	github.com/bgentry/speakeasy v0.1.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.23.0
 	google.golang.org/api v0.98.0
 )
@@ -15,7 +16,6 @@ require (
 	github.com/agext/levenshtein v1.2.2 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/armon/go-radix v1.0.0 // indirect
-	github.com/bgentry/speakeasy v0.1.0 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/golang/protobuf v1.5.2 // indirect

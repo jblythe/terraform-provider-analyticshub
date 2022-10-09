@@ -7,10 +7,6 @@ import (
 	"google.golang.org/api/analyticshub/v1"
 )
 
-const (
-	defaultAPIVersion = "4.0"
-)
-
 func Provider() *schema.Provider {
 	return &schema.Provider{
 		ResourcesMap: map[string]*schema.Resource{
