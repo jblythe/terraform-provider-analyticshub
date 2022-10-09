@@ -41,4 +41,4 @@ check-mod: ## check go.mod is up-to-date
 
 .PHONY: install
 install:
-	@go build -o ~/.terraform.d/plugins/registry.terraform.io/jblythe/analyticshub/${VERSION}/darwin_amd64/terraform-provider-looker
+	@go build -o ~/.terraform.d/plugins/registry.terraform.io/jblythe/analyticshubmake/${VERSION}/darwin_amd64/terraform-provider-looker
