@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"google.golang.org/api/analyticshub/v1"
+	"google.golang.org/api/analyticshub/v1beta1"
 )
 
 func Provider() *schema.Provider {
@@ -20,7 +20,10 @@ func Provider() *schema.Provider {
 }
 
 func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
-	analyticshubService, err := analyticshub.NewService(ctx)
+	upCtx := context.Background()
+	// analyticshubService, err := analyticshub.NewService(ctx)
+	analyticshubService, err := analyticshub.NewService(upCtx)
+
 	if err != nil {
 		println(err)
 	}

@@ -29,7 +29,7 @@ func resourceExchange() *schema.Resource {
 				},*/
 				ValidateFunc: validation.StringDoesNotContainAny(" "),
 			},
-			"projectId": {
+			"project": {
 				Type:     schema.TypeString,
 				Required: true,
 				/*ForceNew: true,*/
@@ -47,7 +47,7 @@ func resourceExchange() *schema.Resource {
 				},*/
 				ValidateFunc: validation.StringDoesNotContainAny(" "),
 			},
-			"dataExchangeId": {
+			"data_exchange_id": {
 				Type:     schema.TypeString,
 				Required: true,
 				/*ForceNew: true,*/
@@ -56,7 +56,7 @@ func resourceExchange() *schema.Resource {
 				},*/
 				ValidateFunc: validation.StringDoesNotContainAny(" "),
 			},
-			"displayName": {
+			"display_name": {
 				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
@@ -76,7 +76,7 @@ func resourceExchange() *schema.Resource {
 				ValidateFunc: validation.StringDoesNotContainAny(" "), // Max 2000 bytes
 				*/
 			},
-			"primaryContact": {
+			"primary_contact": {
 				Type:     schema.TypeString,
 				Optional: true,
 				/*ForceNew: true,*/
@@ -97,7 +97,7 @@ func resourceExchange() *schema.Resource {
 
 				*/
 			},
-			"listingCount": {
+			"listing_count": {
 				Type:     schema.TypeInt,
 				Optional: true,
 				/*ForceNew:    true,*/
@@ -122,6 +122,7 @@ func resourceExchange() *schema.Resource {
 }
 
 func resourceExchangeCreate(ctx context.Context, data *schema.ResourceData, i interface{}) diag.Diagnostics {
+	// analyticshubService, err := analyticshub.NewService(ctx)
 	svc := i.(*analyticshub.Service)
 	client := analyticshub.NewProjectsLocationsDataExchangesService(svc)
 
@@ -142,7 +143,8 @@ func resourceExchangeCreate(ctx context.Context, data *schema.ResourceData, i in
 		return diag.FromErr(err)
 	}
 
-	data.SetId(id)
+	exId := fmt.Sprintf("%s/dataExchanges/%s", parent, id)
+	data.SetId(exId)
 	return resourceExchangeRead(ctx, data, i)
 }
 
@@ -191,31 +193,31 @@ func resourceExchangeRead(ctx context.Context, data *schema.ResourceData, i inte
 		return diag.FromErr(err)
 	}
 
-	if err := data.Set("Name", exchange.Name); err != nil {
+	if err := data.Set("name", exchange.Name); err != nil {
 		return diag.FromErr(err)
 	}
 
-	if err := data.Set("DisplayName", exchange.DisplayName); err != nil {
+	if err := data.Set("display_name", exchange.DisplayName); err != nil {
 		return diag.FromErr(err)
 	}
 
-	if err := data.Set("Description", exchange.Description); err != nil {
+	if err := data.Set("description", exchange.Description); err != nil {
 		return diag.FromErr(err)
 	}
 
-	if err := data.Set("PrimaryContact", exchange.PrimaryContact); err != nil {
+	if err := data.Set("primary_contact", exchange.PrimaryContact); err != nil {
 		return diag.FromErr(err)
 	}
 
-	if err := data.Set("Documentation", exchange.Documentation); err != nil {
+	if err := data.Set("documentation", exchange.Documentation); err != nil {
 		return diag.FromErr(err)
 	}
 
-	if err := data.Set("ListingCount", exchange.ListingCount); err != nil {
+	if err := data.Set("listing_count", exchange.ListingCount); err != nil {
 		return diag.FromErr(err)
 	}
 
-	if err := data.Set("Icon", exchange.Icon); err != nil {
+	if err := data.Set("icon", exchange.Icon); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -223,33 +225,33 @@ func resourceExchangeRead(ctx context.Context, data *schema.ResourceData, i inte
 }
 
 func expandExchange(data *schema.ResourceData) (*analyticshub.DataExchange, error) {
-	displayName := data.Get("DisplayName").(string)
+	displayName := data.Get("display_name").(string)
 
 	exchange := &analyticshub.DataExchange{
 		DisplayName: displayName,
 	}
 
-	if v, ok := data.GetOk("Description"); ok {
+	if v, ok := data.GetOk("description"); ok {
 		description := v.(string)
 		exchange.Description = description
 	}
 
-	if v, ok := data.GetOk("PrimaryContact"); ok {
+	if v, ok := data.GetOk("primary_contact"); ok {
 		primaryContact := v.(string)
 		exchange.PrimaryContact = primaryContact
 	}
 
-	if v, ok := data.GetOk("Documentation"); ok {
+	if v, ok := data.GetOk("documentation"); ok {
 		documentation := v.(string)
 		exchange.Documentation = documentation
 	}
 
-	if v, ok := data.GetOk("listingCount"); ok {
+	if v, ok := data.GetOk("listing_count"); ok {
 		listingCount := v.(int64)
 		exchange.ListingCount = listingCount
 	}
 
-	if v, ok := data.GetOk("Icon"); ok {
+	if v, ok := data.GetOk("icon"); ok {
 		icon := v.(string)
 		exchange.Icon = icon
 	}
@@ -258,7 +260,7 @@ func expandExchange(data *schema.ResourceData) (*analyticshub.DataExchange, erro
 }
 
 func getIds(data *schema.ResourceData) (string, string) {
-	dataExchangeId := data.Get("dataExchangeId").(string)
+	dataExchangeId := data.Get("data_exchange_id").(string)
 	project := data.Get("project").(string)
 	region := data.Get("region").(string)
 	parent := fmt.Sprintf("projects/%s/locations/%s", project, region)
