@@ -10,3 +10,6 @@ bin
 vendor
 build
 pkg/mod
+
+.terraform.lock.hcl
+terraform.tf

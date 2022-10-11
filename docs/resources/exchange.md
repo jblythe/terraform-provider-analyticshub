@@ -27,7 +27,7 @@ description: |-
 - `description` (String)
 - `documentation` (String)
 - `icon` (String)
-- `listingCount` (Number) This is a write only property. Any values here will not be used by the process
+- `listingCount` (Number) This is a return only property. Any values here will not be used by the resource
 - `name` (String) This is a return only property. Any values placed here will not be used by the resource
 - `primaryContact` (String)
 

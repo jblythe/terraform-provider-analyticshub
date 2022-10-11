@@ -20,9 +20,9 @@ func resourceExchange() *schema.Resource {
 		},
 		Schema: map[string]*schema.Schema{
 			"name": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				ForceNew:    true,
+				Type:     schema.TypeString,
+				Optional: true,
+				/*ForceNew:    true,*/
 				Description: "This is a return only property. Any values placed here will not be used by the resource",
 				/*DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
 					return strings.EqualFold(old, new) // case-insensive comparing
@@ -32,7 +32,7 @@ func resourceExchange() *schema.Resource {
 			"projectId": {
 				Type:     schema.TypeString,
 				Required: true,
-				ForceNew: true,
+				/*ForceNew: true,*/
 				/*DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
 					return strings.EqualFold(old, new) // case-insensive comparing
 				},*/
@@ -41,7 +41,7 @@ func resourceExchange() *schema.Resource {
 			"region": {
 				Type:     schema.TypeString,
 				Required: true,
-				ForceNew: true,
+				/*ForceNew: true,*/
 				/*DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
 					return strings.EqualFold(old, new) // case-insensive comparing
 				},*/
@@ -50,7 +50,7 @@ func resourceExchange() *schema.Resource {
 			"dataExchangeId": {
 				Type:     schema.TypeString,
 				Required: true,
-				ForceNew: true,
+				/*ForceNew: true,*/
 				/*DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
 					return strings.EqualFold(old, new) // case-insensive comparing
 				},*/
@@ -62,41 +62,46 @@ func resourceExchange() *schema.Resource {
 				ForceNew: true,
 				/*DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
 					return strings.EqualFold(old, new) // case-insensive comparing
-				},*/
+				},
 				ValidateFunc: validation.StringDoesNotContainAny(" "),
+				*/
 			},
 			"description": {
 				Type:     schema.TypeString,
 				Optional: true,
-				ForceNew: true,
+				/*ForceNew: true,*/
 				/*DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
 					return strings.EqualFold(old, new) // case-insensive comparing
-				},*/
+				},
 				ValidateFunc: validation.StringDoesNotContainAny(" "), // Max 2000 bytes
+				*/
 			},
 			"primaryContact": {
 				Type:     schema.TypeString,
 				Optional: true,
-				ForceNew: true,
+				/*ForceNew: true,*/
 				/*DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
 					return strings.EqualFold(old, new) // case-insensive comparing
-				},*/
+				},
 				ValidateFunc: validation.StringDoesNotContainAny(" "), //Max len 2000 bytes
+				*/
 			},
 			"documentation": {
 				Type:     schema.TypeString,
 				Optional: true,
-				ForceNew: true,
+				/*ForceNew: true,*/
 				/*DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
 					return strings.EqualFold(old, new) // case-insensive comparing
-				},*/
+				},
 				ValidateFunc: validation.StringDoesNotContainAny(" "),
+
+				*/
 			},
 			"listingCount": {
-				Type:        schema.TypeInt,
-				Optional:    true,
-				ForceNew:    true,
-				Description: "This is a write only property. Any values here will not be used by the process",
+				Type:     schema.TypeInt,
+				Optional: true,
+				/*ForceNew:    true,*/
+				Description: "This is a return only property. Any values here will not be used by the resource",
 				/*DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
 					return strings.EqualFold(old, new) // case-insensive comparing
 				},
@@ -105,11 +110,12 @@ func resourceExchange() *schema.Resource {
 			"icon": {
 				Type:     schema.TypeString,
 				Optional: true,
-				ForceNew: true,
+				/*ForceNew: true,*/
 				/*DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
 					return strings.EqualFold(old, new) // case-insensive comparing
-				},*/
+				},
 				ValidateFunc: validation.StringDoesNotContainAny(" "),
+				*/
 			},
 		},
 	}
