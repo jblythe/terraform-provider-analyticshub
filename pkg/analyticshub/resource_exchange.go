@@ -1,6 +1,7 @@
 package analyticshub
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -137,14 +138,13 @@ func resourceExchangeCreate(ctx context.Context, data *schema.ResourceData, i in
 
 	createSvc := client.Create(parent, exchange)
 	createSvc.DataExchangeId(id)
-	_, err = createSvc.Do()
+	exchange, err = createSvc.Do()
 
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
-	exId := fmt.Sprintf("%s/dataExchanges/%s", parent, id)
-	data.SetId(exId)
+	data.SetId(exchange.Name)
 	return resourceExchangeRead(ctx, data, i)
 }
 
@@ -158,7 +158,11 @@ func resourceExchangeUpdate(ctx context.Context, data *schema.ResourceData, i in
 		return diag.FromErr(err)
 	}
 
-	_, err = client.Patch(exchange.DisplayName, exchange).Do()
+	patchSvc := client.Patch(data.Id(), exchange)
+	upMask := getUpdateMask(data)
+	fmt.Println(upMask.String())
+	patchSvc.UpdateMask(upMask.String())
+	_, err = patchSvc.Do()
 
 	return resourceExchangeRead(ctx, data, i)
 }
@@ -265,4 +269,27 @@ func getIds(data *schema.ResourceData) (string, string) {
 	region := data.Get("region").(string)
 	parent := fmt.Sprintf("projects/%s/locations/%s", project, region)
 	return parent, dataExchangeId
+}
+
+func getUpdateMask(data *schema.ResourceData) bytes.Buffer {
+
+	var buffer bytes.Buffer
+
+	if _, ok := data.GetOk("description"); ok {
+		buffer.WriteString("description,")
+	}
+
+	if _, ok := data.GetOk("primary_contact"); ok {
+		buffer.WriteString("primaryContact,")
+	}
+
+	if _, ok := data.GetOk("documentation"); ok {
+		buffer.WriteString("documentation,")
+	}
+
+	if _, ok := data.GetOk("icon"); ok {
+		buffer.WriteString("icon,")
+	}
+
+	return buffer
 }
